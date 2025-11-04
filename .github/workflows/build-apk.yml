@@ -16,16 +16,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-        # ❌ Hilangkan cache untuk mencegah error karena tidak ada lock file
 
-      - name: 📦 Instal Dependensi
+      - name: 📦 Instal Dependensi Utama
         run: |
-          echo "Memasang alat build..."
-          npm install -g @capacitor/cli @ionic/cli
+          echo "Memasang alat build dan pustaka Capacitor..."
           npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/android @ionic/cli
+
+      - name: ⚙️ Inisialisasi Proyek Capacitor
+        run: |
+          echo "Membuat proyek Capacitor baru..."
           npx cap init "Eksperimen Bilangan Acak LCG" "id.danks0202.lcgexperiment" --web-dir=.
 
-      - name: 🧱 Tambah Platform Android (lewati jika sudah ada)
+      - name: 🧱 Tambah Platform Android (otomatis)
         run: |
           if [ ! -d "android" ]; then
             echo "📲 Menambahkan platform Android..."
@@ -39,7 +42,7 @@ jobs:
           echo "🔗 Menyinkronkan aset web ke proyek Android..."
           npx cap sync android
 
-      - name: 🏗️ Build APK
+      - name: 🏗️ Build APK Debug
         run: |
           cd android
           chmod +x gradlew

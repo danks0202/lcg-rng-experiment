@@ -1,39 +1,3 @@
-name: 🔧 Build by Endang – Eksperimen LCG (Web → APK)
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 📥 Checkout Kode
-        uses: actions/checkout@v4
-
-      - name: ⚙️ Siapkan Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: 📦 Instal Dependensi Utama
-        run: |
-          echo "Memasang alat build dan pustaka Capacitor..."
-          npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android @ionic/cli
-
-      - name: ⚙️ Inisialisasi Proyek Capacitor
-        run: |
-          echo "Membuat proyek Capacitor baru..."
-          npx cap init "Eksperimen Bilangan Acak LCG" "id.danks0202.lcgexperiment" --web-dir=.
-
-      - name: 🧱 Tambah Platform Android (otomatis)
-        run: |
-          if [ ! -d "android" ]; then
-            echo "📲 Menambahkan platform Android..."
-            npx cap add android
-          else
             echo "📂 Folder android sudah ada, lewati langkah ini."
           fi
 

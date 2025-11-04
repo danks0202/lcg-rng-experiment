@@ -1,4 +1,4 @@
-name: Build Web APK (Capacitor)
+name: 🔧 Build by Endang – Eksperimen LCG (Web → APK)
 
 on:
   push:
@@ -9,34 +9,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Kode
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: ⚙️ Siapkan Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: 📦 Instal Dependensi
         run: |
+          echo "Memasang alat build..."
           npm install -g @capacitor/cli @ionic/cli
           npm init -y
           npx cap init "Eksperimen Bilangan Acak LCG" "id.danks0202.lcgexperiment" --web-dir=.
-          mkdir android
-          npx cap add android
 
-      - name: Build web assets
+      - name: 🧱 Tambah Platform Android (lewati jika sudah ada)
         run: |
-          echo "Membangun aset web untuk APK..."
+          if [ ! -d "android" ]; then
+            echo "📲 Menambahkan platform Android..."
+            npx cap add android
+          else
+            echo "📂 Folder android sudah ada, lewati langkah ini."
+          fi
+
+      - name: 🔄 Sinkronisasi Aset Web
+        run: |
+          echo "🔗 Menyinkronkan aset web ke proyek Android..."
           npx cap sync android
 
-      - name: Build APK
+      - name: 🏗️ Build APK
         run: |
           cd android
+          chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: 📤 Upload Hasil APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
+          name: 📱 Eksperimen-LCG-By-Endang
           path: android/app/build/outputs/apk/debug/app-debug.apk

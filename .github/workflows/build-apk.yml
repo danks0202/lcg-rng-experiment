@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+        # ❌ Hilangkan cache untuk mencegah error karena tidak ada lock file
 
       - name: 📦 Instal Dependensi
         run: |
